@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard | AASHA Connect</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<div class="navbar">
+  <div class="nav-left">AASHA Connect – Admin</div>
+  <div class="nav-right">
+    <a href="../index.html" class="active">Dashboard</a>
+    <a href="workers.html">ASHA Workers</a>
+    <a href="families.html">Families</a>
+    <a href="reports.html">Reports</a>
+    <a href="login.html">Logout</a>
+  </div>
+</div>
+
+<!-- ============ BACKGROUND SECTION ============ -->
+<div class="admin-bg">
+  <div class="overlay"></div>
+
+  <div class="dashboard-container">
+
+    <h1>Admin Dashboard</h1>
+    <p class="subtitle">Centralized monitoring & control panel</p>
+
+    <!-- ======= STATS CARDS ======= -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h2>👩‍⚕️ ASHA Workers</h2>
+        <p class="stat-number">12</p>
+        <span>Total registered</span>
+      </div>
+
+      <div class="stat-card">
+        <h2>👨‍👩‍👧 Families</h2>
+        <p class="stat-number">346</p>
+        <span>Total surveyed</span>
+      </div>
+
+      <div class="stat-card">
+        <h2>📍 Areas</h2>
+        <p class="stat-number">9</p>
+        <span>Coverage zones</span>
+      </div>
+
+      <div class="stat-card alert">
+        <h2>⚠️ Alerts</h2>
+        <p class="stat-number">7</p>
+        <span>Pending actions</span>
+      </div>
+    </div>
+
+    <!-- ======= ACTION CARDS ======= -->
+    <div class="action-grid">
+      <div class="action-card">
+        <h3>Manage ASHA Workers</h3>
+        <p>Add, remove or review ASHA worker assignments.</p>
+        <button>Go to Workers</button>
+      </div>
+
+      <div class="action-card">
+        <h3>View Family Data</h3>
+        <p>Browse, filter and analyze registered families.</p>
+        <a href="/Asha Connect/worker/families.html">
+          <button>Families</button>
+        </a>
+      </div>
+
+      <div class="action-card">
+        <h3>Generate Reports</h3>
+        <p>Create health & performance reports automatically.</p>
+        <a href="/admin/reports.html"></a>
+        <button>Generate Report</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

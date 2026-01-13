@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Families | Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left">AASHA Connect – Admin</div>
+  <div class="nav-right">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="workers.html">Workers</a>
+    <a href="families.html" class="active">Families</a>
+    <a href="login.html">Logout</a>
+  </div>
+</div>
+
+<div class="admin-bg">
+  <div class="overlay"></div>
+
+  <div class="admin-content dashboard-container">
+    <h1>Families</h1>
+    <p class="subtitle">All registered families</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Head Name</th>
+          <th>Contact</th>
+          <th>Address</th>
+          <th>Notes</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="familyTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="families.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reports | AASHA Connect</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav-left">AASHA Connect – Admin</div>
+  <div class="nav-right">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="workers.html">ASHA Workers</a>
+    <a href="families.html">Families</a>
+    <a href="reports.html" class="active">Reports</a>
+    <a href="login.html">Logout</a>
+  </div>
+</div>
+
+<div class="admin-bg">
+  <div class="overlay"></div>
+
+  <div class="dashboard-container">
+    <h1>Reports</h1>
+    <p class="subtitle">Auto-generated insights from field data</p>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Families</h3>
+        <p id="totalFamilies">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Added Today</h3>
+        <p id="todayFamilies">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>This Month</h3>
+        <p id="monthFamilies">--</p>
+      </div>
+    </div>
+   
+
+
+    <!-- AI SUMMARY -->
+   <div class="stats-grid">
+  <div class="stat-card">
+    <h3>Total Families</h3>
+    <p id="totalFamilies">--</p>
+  </div>
+  <div class="stat-card">
+    <h3>Added Today</h3>
+    <p id="todayFamilies">--</p>
+  </div>
+  <div class="stat-card">
+    <h3>This Month</h3>
+    <p id="monthFamilies">--</p>
+  </div>
+</div>
+
+
+<div class="action-card">
+  <h3>🧠 Automated Insights</h3>
+  <p id="aiSummary">Loading report...</p>
+</div>
+
+    <div class="action-card" style="margin-top:30px;">
+  <h3>⬇ Export Report</h3>
+  <button onclick="downloadCSV()">Download CSV</button>
+  <button onclick="downloadPDF()">Download PDF</button>
+</div>
+
+
+  </div>
+</div>
+
+<script src="reports.js"></script>
+</body>
+</html>

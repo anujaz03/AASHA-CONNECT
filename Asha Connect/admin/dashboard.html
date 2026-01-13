@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AASHA Connect – Empowering Aasha Workers</title>
+
+    <style>
+        /* GLOBAL BACKGROUND – using the AASHA workers image */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: url("aasha-bg.png") no-repeat center center fixed; /* <-- put your image name */
+            background-size: cover;
+        }
+
+        /* Overlay to make text readable */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: -1;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #ff1675;
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ffd6eb;
+        }
+
+        .navbar nav a {
+            margin-left: 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* MAIN LANDING BOX */
+        .landing-container {
+            width: 70%;
+            margin: 120px auto;
+            padding: 40px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0px 0px 30px rgba(255, 70, 120, 0.4);
+            color: white;
+        }
+
+        .section-title {
+            font-size: 30px;
+            margin: 20px 0;
+            color: #fff;
+        }
+
+        .info-text {
+            font-size: 17px;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        /* PIE CHART (CSS) */
+        .pie-chart {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #ff1675 40%, 
+                #ffd6eb 40% 70%, 
+                white 70%
+            );
+            margin: 20px auto;
+            box-shadow: 0 0 20px rgba(255, 70, 120, 0.4);
+        }
+
+        .chart-labels {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .chart-labels span {
+            display: block;
+            margin: 5px 0;
+        }
+
+        /* BUTTONS */
+        .role-buttons a {
+            display: inline-block;
+            margin: 12px;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: white;
+            background: #ff1675;
+            box-shadow: 0px 0px 15px rgba(255,60,130,0.5);
+        }
+
+        .role-buttons a:hover {
+            background: #ff0f66;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-overlay"></div>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="logo">AASHA<span>Connect</span></div>
+        <nav>
+            <a href="worker/dashboard.html">Worker Login</a>
+            <a href="admin/login.html">Admin Login</a>
+            <a href="#info">About</a>
+        </nav>
+    </header>
+
+    <!-- MAIN LANDING SECTION -->
+    <div class="landing-container" id="info">
+
+        <h2 class="section-title">Who Are AASHA Workers?</h2>
+        <p class="info-text">
+            Aasha (Accredited Social Health Activist) workers are frontline health warriors 
+            who serve as the connection between families and the healthcare system.  
+            They support pregnant women, newborns, children, and elderly citizens by providing essential health guidance.
+        </p>
+
+        <h2 class="section-title">How They Help Society</h2>
+        <p class="info-text">
+            • Maternal & child healthcare<br>
+            • Vaccination support & tracking<br>
+            • Nutrition & hygiene awareness<br>
+            • Home visits and surveys<br>
+            • Health counselling & emergency linkage<br>
+        </p>
+
+        <h2 class="section-title">AASHA Workers – Global Impact</h2>
+
+        <div class="pie-chart"></div>
+
+        <div class="chart-labels">
+            <span>🌸 40% Maternal & Child Care</span>
+            <span>💉 30% Immunization Work</span>
+            <span>🏡 30% Health Awareness & Home Care</span>
+        </div>
+
+        <div class="role-buttons">
+            <a href="worker/dashboard.html">Worker Portal</a>
+            <a href="admin/login.html">Admin Portal</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

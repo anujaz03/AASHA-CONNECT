@@ -1,0 +1,104 @@
+/* ===== AUTH PAGES ONLY ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.auth-bg {
+  height: 100vh;
+  background: url("admindash.avif") no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* NAVBAR (AUTH) */
+.navbar {
+  height: 60px;
+  background: #ff2f7d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  color: white;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.nav-left {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.nav-right a {
+  color: white;
+  margin-left: 25px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* LOGIN / REGISTER BOX */
+.auth-box {
+  position: relative;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(14px);
+  padding: 35px;
+  width: 380px;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+  text-align: center;
+  z-index: 1;
+}
+
+.auth-box h2 {
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #eee;
+  margin-bottom: 22px;
+}
+
+.auth-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+}
+
+.auth-box button {
+  width: 100%;
+  padding: 12px;
+  background:#ff1675;
+  color: white;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.switch {
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.switch a {
+  color: #ffd1e6;
+  text-decoration: none;
+}

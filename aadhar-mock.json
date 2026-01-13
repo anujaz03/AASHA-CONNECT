@@ -1,0 +1,16 @@
+{
+    "123412341234": {
+        "name": "Anjali Devi",
+        "dob": "1987-05-21",
+        "gender": "Female",
+        "address": "Ward 5, Nandgaon, Maharashtra",
+        "phone": "9876543210"
+    },
+    "987698769876": {
+        "name": "Ramesh Kumar",
+        "dob": "1990-10-11",
+        "gender": "Male",
+        "address": "Block 3, Dholpur, Rajasthan",
+        "phone": "9080706050"
+    }
+}
