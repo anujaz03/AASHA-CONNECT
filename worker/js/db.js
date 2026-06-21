@@ -21,7 +21,11 @@ request.onsuccess = (e) => {
   console.log("✅ IndexedDB ready");
 
   // flush queued saves
-  pendingQueue.forEach(data => saveOfflineFamily(data));
+  pendingQueue.forEach(item => {
+    saveOfflineFamily(item.data)
+      .then(item.resolve)
+      .catch(item.reject);
+  });
   pendingQueue.length = 0;
 };
 
@@ -30,23 +34,48 @@ request.onerror = () => {
 };
 
 function saveOfflineFamily(data) {
-  if (!dbReady) {
-    console.log("⏳ DB not ready, queueing");
-    pendingQueue.push(data);
-    return;
-  }
+  return new Promise((resolve, reject) => {
+    if (!dbReady) {
+      console.log("⏳ DB not ready, queueing");
+      pendingQueue.push({ data, resolve, reject });
+      return;
+    }
 
-  const tx = db.transaction("families", "readwrite");
-  const store = tx.objectStore("families");
-  store.add({
-  ...data,
-  synced: false,
-  createdAt: new Date()
-});
-;
+    try {
+      const tx = db.transaction("families", "readwrite");
+      const store = tx.objectStore("families");
+      
+      // Prevent saving fields with "undefined" string
+      const cleanData = { ...data };
+      Object.keys(cleanData).forEach(key => {
+        if (cleanData[key] === undefined) {
+          cleanData[key] = "";
+        }
+      });
 
-  alert("🟡 Offline: Data saved locally");
+      const req = store.add({
+        ...cleanData,
+        synced: false,
+        createdAt: new Date()
+      });
+
+      req.onsuccess = (e) => {
+        const id = e.target.result;
+        console.log(`[IndexedDB] Saved family locally with ID: ${id}`);
+        resolve(id);
+      };
+
+      req.onerror = (e) => {
+        console.error("[IndexedDB] Error saving family:", e.target.error);
+        reject(e.target.error);
+      };
+    } catch (err) {
+      console.error("[IndexedDB] Exception in saveOfflineFamily:", err);
+      reject(err);
+    }
+  });
 }
+
 // READ all families (for families.html)
 function getAllFamilies(callback) {
   if (!dbReady) {
@@ -56,44 +85,53 @@ function getAllFamilies(callback) {
 
   const tx = db.transaction("families", "readonly");
   const store = tx.objectStore("families");
-  const families = [];
-
-  store.openCursor().onsuccess = (e) => {
-    const cursor = e.target.result;
-    if (cursor) {
-      families.push(cursor.value);
-      cursor.continue();
-    } else {
-      callback(families);
-    }
-  };
-}
-
-// UPDATE family as synced
-function markFamilySynced(id) {
-  const tx = db.transaction("families", "readwrite");
-  const store = tx.objectStore("families");
-
-  const req = store.get(id);
-  req.onsuccess = () => {
-    const data = req.result;
-    data.synced = true;
-    store.put(data);
-  };
-}
-function getAllFamilies(callback) {
-  const tx = db.transaction("families", "readonly");
-  const store = tx.objectStore("families");
   const req = store.getAll();
 
   req.onsuccess = () => callback(req.result);
 }
 
+// DELETE a family from IndexedDB
+function deleteOfflineFamily(id) {
+  return new Promise((resolve, reject) => {
+    if (!dbReady) {
+      setTimeout(() => deleteOfflineFamily(id).then(resolve).catch(reject), 300);
+      return;
+    }
+
+    try {
+      const tx = db.transaction("families", "readwrite");
+      const store = tx.objectStore("families");
+      const numericId = typeof id === "string" && !isNaN(id) ? Number(id) : id;
+      const req = store.delete(numericId);
+
+      req.onsuccess = () => {
+        console.log(`[IndexedDB] Deleted local family with ID: ${id}`);
+        resolve();
+      };
+
+      req.onerror = (e) => {
+        console.error(`[IndexedDB] Failed to delete family with ID: ${id}`, e.target.error);
+        reject(e.target.error);
+      };
+    } catch (err) {
+      console.error(`[IndexedDB] Exception in deleteOfflineFamily:`, err);
+      reject(err);
+    }
+  });
+}
+
+// UPDATE family as synced (Legacy helper - keeping for backward compatibility)
 function markFamilySynced(id) {
+  if (!dbReady) {
+    setTimeout(() => markFamilySynced(id), 300);
+    return;
+  }
+
   const tx = db.transaction("families", "readwrite");
   const store = tx.objectStore("families");
+  const numericId = typeof id === "string" && !isNaN(id) ? Number(id) : id;
 
-  const req = store.get(id);
+  const req = store.get(numericId);
   req.onsuccess = () => {
     const data = req.result;
     if (data) {
@@ -102,4 +140,3 @@ function markFamilySynced(id) {
     }
   };
 }
-

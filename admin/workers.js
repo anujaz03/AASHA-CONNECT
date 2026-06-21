@@ -32,9 +32,28 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async e => {
     e.preventDefault();
 
-    const name = document.getElementById("workerName").value;
-    const phone = document.getElementById("workerPhone").value;
-    const area = document.getElementById("workerArea").value;
+    const name = document.getElementById("workerName").value.trim();
+    const phone = document.getElementById("workerPhone").value.trim();
+    const area = document.getElementById("workerArea").value.trim();
+
+    // 📋 Frontend Validation
+    const namePattern = /^[a-zA-Z\s]{3,50}$/;
+    if (!namePattern.test(name)) {
+      alert("Worker name must contain only alphabets and spaces, and be 3 to 50 characters long.");
+      return;
+    }
+
+    const phonePattern = /^[6-9]\d{9}$/;
+    if (!phonePattern.test(phone)) {
+      alert("Please enter a valid 10-digit mobile number starting with 6-9.");
+      return;
+    }
+
+    if (!area) {
+      alert("Please specify the assigned area.");
+      return;
+    }
+
 try {
   const res = await fetch("http://localhost:5000/api/worker/add", {
     method: "POST",

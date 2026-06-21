@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="worker.css">
+    <title>Add New Family</title>
+    <link rel="icon" href="/favicon.ico" />
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">AASHA Connect</div>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="add-family.html">Add Family</a>
+        <a href="families.html">Families</a>
+        <a href="qr.html">Scan QR</a>
+        <a href="login.html" class="logout">Logout</a>
+    </nav>
+</div>
+
+<div class="center-box">
+    <h2>Add New Family</h2>
+
+    <!-- LANGUAGE SELECT -->
+    <select id="voiceLang" class="lang-select">
+        <option value="en-IN">English</option>
+        <option value="hi-IN">Hindi</option>
+        <option value="mr-IN">Marathi</option>
+    </select>
+
+    <!-- FAMILY HEAD -->
+    <div class="voice-group">
+        <input type="text" id="headName" placeholder="Family Head Name *">
+        <button onclick="startVoice('headName')">🎤</button>
+    </div>
+
+    <!-- ADDRESS -->
+    <div class="voice-group">
+        <input type="text" id="address" placeholder="Address *">
+        <button onclick="startVoice('address')">🎤</button>
+    </div>
+
+    <!-- CONTACT -->
+    <input type="number" id="contact" placeholder="Contact Number *">
+
+    <!-- NOTES -->
+    <div class="voice-group">
+        <textarea id="notes" placeholder="Family Details (Short Notes)"></textarea>
+        <button onclick="startVoice('notes')">🎤</button>
+    </div>
+
+    <button id="saveFamilyBtn" class="btn btn-primary">
+        Save Family
+    </button>
+</div>
+
+<script src="./js/db.js"></script>
+<script src="./js/sync.js"></script>
+<script src="worker.js"></script>
+
+</body>
+</html>

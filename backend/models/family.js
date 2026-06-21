@@ -36,6 +36,38 @@ const FamilySchema = new mongoose.Schema({
     default: ""
   },
 
+  abhaId: {
+    type: String,
+    default: ""
+  },
+
+  abhaAddress: {
+    type: String,
+    default: ""
+  },
+
+  latitude: {
+    type: Number,
+    default: 0
+  },
+
+  longitude: {
+    type: Number,
+    default: 0
+  },
+
+  members: [{
+    name: String,
+    age: Number,
+    gender: String,
+    relation: String,
+    vaccinations: [{
+      name: String,
+      dueDate: Date,
+      status: { type: String, default: "Pending" }
+    }]
+  }],
+
   createdAt: {
     type: Date,
     default: Date.now

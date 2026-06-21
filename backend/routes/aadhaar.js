@@ -15,14 +15,21 @@ const aadhaarDB = {
   }
 };
 
-router.get("/fetch/:phone", (req, res) => {
+const handler = (req, res) => {
   const phone = req.params.phone;
 
   if (!aadhaarDB[phone]) {
-    return res.status(404).json({ message: "Aadhaar not found" });
+    return res.status(404).json({ success: false, message: "Aadhaar not found" });
   }
 
-  res.json(aadhaarDB[phone]);
-});
+  res.json({
+    success: true,
+    data: aadhaarDB[phone],
+    ...aadhaarDB[phone]
+  });
+};
+
+router.get("/fetch/:phone", handler);
+router.get("/:phone", handler);
 
 module.exports = router;

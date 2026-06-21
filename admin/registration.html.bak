@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Registration | AASHA Connect</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav-left">AASHA Connect</div>
+  <div class="nav-right">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="/worker/families.html">View Family</a>
+    <a href="#">Scan QR</a>
+    <a href="#">Logout</a>
+  </div>
+</div>
+
+<!-- BACKGROUND -->
+<div class="auth-bg">
+  <div class="overlay"></div>
+
+  <div class="auth-box">
+    <h2>Admin Registration</h2>
+    <p class="subtitle">Create admin access</p>
+
+    <form id="registerForm">
+
+      <!-- Phone number -->
+      <input
+        type="text"
+        id="phone"
+        placeholder="Aadhaar-linked Phone Number"
+        required
+      />
+
+      <!-- SEND OTP -->
+      <button type="button" onclick="sendOTP()">
+        Send OTP
+      </button>
+
+      <!-- OTP INPUT -->
+      <input
+        type="text"
+        id="otp"
+        placeholder="Enter OTP"
+        style="display:none"
+        onkeydown="return event.key !== 'Enter';" 
+      />
+
+      <!-- VERIFY BUTTON (ONLY ONE ✅) -->
+      <button
+        type="button"
+        id="verifyBtn"
+        onclick="verifyOTP()"
+        style="display:none"
+      >
+        Verify & Fetch Details
+      </button>
+
+      <!-- Auto-filled Aadhaar data -->
+      <input type="text" id="fullname" placeholder="Full Name" readonly />
+      <input type="text" id="city" placeholder="City" readonly />
+      <input type="text" id="aadhaar" placeholder="Aadhaar Number" readonly />
+
+      <!-- Set Password -->
+      <input
+        type="password"
+        id="password"
+        placeholder="Set Password"
+        required
+      />
+
+      <!-- Confirm Password -->
+      <input
+        type="password"
+        id="confirmPassword"
+        placeholder="Confirm Password"
+        required
+      />
+
+      <!-- Final submit -->
+      <button type="submit">
+        Register
+      </button>
+
+    </form>
+
+    <div id="recaptcha-container"></div>
+
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<!-- JS -->
+
+<script src="registration.js"></script>
+
+</body>
+</html>

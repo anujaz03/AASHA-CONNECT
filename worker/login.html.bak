@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="worker.css">
+    <title>Aasha Worker Login</title>
+    <link rel="icon" href="/favicon.ico" />
+
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">AASHA Connect</div>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="add-family.html">Add Family</a>
+        <a href="families.html">Families</a>
+        <a href="qr.html">Scan QR</a>
+        <a href="login.html" class="logout">Logout</a>
+    </nav>
+</div>
+
+<div class="center-box">
+    <h2>Worker Login</h2>
+
+    <input type="text" placeholder="Worker ID">
+    <input type="password" placeholder="Password">
+
+    <button class="btn btn-primary" onclick="location.href='dashboard.html'">
+        Login
+    </button>
+</div>
+
+
+
+</body>
+</html>

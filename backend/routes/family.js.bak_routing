@@ -1,0 +1,113 @@
+const express = require("express");
+const router = express.Router();
+const Family = require("../models/family");
+
+/* ================= ADD FAMILY ================= */
+router.post("/add", async (req, res) => {
+  try {
+    console.log("SENDING FAMILY:", req.body);
+
+    // ⚠️ Sync Conflict Detection
+    const existing = await Family.findOne({ contact: req.body.contact });
+    if (existing) {
+      if (existing.headName === req.body.headName && existing.address === req.body.address) {
+        return res.json({
+          success: true,
+          message: "Family already synchronized",
+          family: existing
+        });
+      } else {
+        return res.status(409).json({
+          conflict: true,
+          message: "Conflict detected: A family with this contact number already exists on the server.",
+          serverFamily: existing,
+          localFamily: req.body
+        });
+      }
+    }
+
+    let abhaId = req.body.abhaId || "";
+    let abhaAddress = req.body.abhaAddress || "";
+
+    if (abhaId === "PENDING_VERIFICATION") {
+      const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+      const cleanName = req.body.headName ? req.body.headName.toLowerCase().replace(/[^a-z0-9]/g, "") : "user";
+      abhaAddress = `${cleanName}${randomSuffix}@abdm`;
+      abhaId = `${Math.floor(10 + Math.random() * 89)}-${Math.floor(1000 + Math.random() * 8999)}-${Math.floor(1000 + Math.random() * 8999)}-${Math.floor(1000 + Math.random() * 8999)}`;
+    }
+
+    let latitude = req.body.latitude;
+    let longitude = req.body.longitude;
+
+    if (!latitude || !longitude || latitude === 0 || longitude === 0) {
+      latitude = 18.5204 + (Math.random() - 0.5) * 0.08;
+      longitude = 73.8567 + (Math.random() - 0.5) * 0.08;
+    }
+
+    const family = new Family({
+      headName: req.body.headName,
+      address: req.body.address,
+      contact: req.body.contact,
+      notes: req.body.notes || "",
+      addedByWorkerId: req.body.addedByWorkerId || "",
+      addedByWorkerName: req.body.addedByWorkerName || "",
+      abhaId,
+      abhaAddress,
+      latitude,
+      longitude,
+      members: req.body.members || []
+    });
+
+    await family.save();
+
+    res.json({
+      success: true,
+      message: "Family saved successfully",
+      family
+    });
+
+  } catch (err) {
+    console.error("SAVE FAMILY ERROR:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to save family"
+    });
+  }
+});
+
+/* ================= UPDATE FAMILY ================= */
+router.put("/update/:contact", async (req, res) => {
+  try {
+    const updatedFields = {
+      headName: req.body.headName,
+      address: req.body.address,
+      notes: req.body.notes,
+      abhaId: req.body.abhaId,
+      abhaAddress: req.body.abhaAddress,
+      members: req.body.members
+    };
+    if (req.body.latitude) updatedFields.latitude = req.body.latitude;
+    if (req.body.longitude) updatedFields.longitude = req.body.longitude;
+
+    const updated = await Family.findOneAndUpdate(
+      { contact: req.params.contact },
+      updatedFields,
+      { new: true }
+    );
+    res.json({ success: true, family: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Update failed" });
+  }
+});
+
+/* ================= GET ALL FAMILIES ================= */
+router.get("/all", async (req, res) => {
+  try {
+    const families = await Family.find().sort({ createdAt: -1 });
+    res.json(families);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch families" });
+  }
+});
+
+module.exports = router;

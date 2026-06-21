@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>Admin Dashboard | AASHA Connect</title>
   <link rel="stylesheet" href="admin.css">
+  <!-- Leaflet Map Integration -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 
 <body>
@@ -33,26 +36,26 @@
     <div class="stats-grid">
       <div class="stat-card">
         <h2>👩‍⚕️ ASHA Workers</h2>
-        <p class="stat-number">12</p>
+        <p class="stat-number" id="totalWorkers">--</p>
         <span>Total registered</span>
       </div>
 
       <div class="stat-card">
         <h2>👨‍👩‍👧 Families</h2>
-        <p class="stat-number">346</p>
+        <p class="stat-number" id="totalFamilies">--</p>
         <span>Total surveyed</span>
       </div>
 
       <div class="stat-card">
-        <h2>📍 Areas</h2>
-        <p class="stat-number">9</p>
-        <span>Coverage zones</span>
+        <h2>📅 Today Surveyed</h2>
+        <p class="stat-number" id="todayFamilies">--</p>
+        <span>Added today</span>
       </div>
 
       <div class="stat-card alert">
-        <h2>⚠️ Alerts</h2>
-        <p class="stat-number">7</p>
-        <span>Pending actions</span>
+        <h2>📊 This Month</h2>
+        <p class="stat-number" id="monthFamilies">--</p>
+        <span>Added this month</span>
       </div>
     </div>
 
@@ -61,13 +64,15 @@
       <div class="action-card">
         <h3>Manage ASHA Workers</h3>
         <p>Add, remove or review ASHA worker assignments.</p>
-        <button>Go to Workers</button>
+        <a href="workers.html">
+          <button>Go to Workers</button>
+        </a>
       </div>
 
       <div class="action-card">
         <h3>View Family Data</h3>
         <p>Browse, filter and analyze registered families.</p>
-        <a href="/Asha Connect/worker/families.html">
+        <a href="families.html">
           <button>Families</button>
         </a>
       </div>
@@ -75,13 +80,23 @@
       <div class="action-card">
         <h3>Generate Reports</h3>
         <p>Create health & performance reports automatically.</p>
-        <a href="/admin/reports.html"></a>
-        <button>Generate Report</button>
+        <a href="reports.html">
+          <button>Generate Report</button>
+        </a>
       </div>
+    </div>
+
+    <!-- ======= GEOSPATIAL DISEASE OUTBREAK MAP ======= -->
+    <div style="background: rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 25px; margin-top: 30px; border: 1px solid rgba(255,255,255,0.1); text-align: left; box-shadow: 0px 0px 30px rgba(255, 70, 120, 0.25);">
+      <h3 style="margin-top: 0; color: #ffd6eb; font-size: 20px; margin-bottom: 5px;">🗺️ Geospatial Outbreak & Coverage Heatmap</h3>
+      <p style="font-size: 13px; opacity: 0.9; margin-top: 0; margin-bottom: 20px;">Real-time mapping of family surveys and active vaccine/health alerts across regions.</p>
+      <div id="outbreakMap" style="height: 380px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); background: #333; box-shadow: inset 0 0 20px rgba(0,0,0,0.4);"></div>
     </div>
 
   </div>
 </div>
 
+<script src="dashboard.js"></script>
+<script src="status-banner.js"></script>
 </body>
 </html>

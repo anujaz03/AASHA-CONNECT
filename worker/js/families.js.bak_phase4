@@ -1,0 +1,235 @@
+const onlineList = document.querySelector("#onlineFamilies .family-list");
+const offlineList = document.querySelector("#offlineFamilies .family-list");
+const searchBox = document.getElementById("searchBox");
+const syncBtn = document.getElementById("syncBtn");
+
+/* --------------------------
+   FETCH FROM MONGODB (ONLINE)
+--------------------------- */
+async function fetchMongoFamilies(filter = "") {
+  try {
+    const res = await fetch("http://localhost:5000/api/family/all");
+    const families = await res.json();
+
+    onlineList.innerHTML = "";
+
+    families.forEach(f => {
+      if (
+        filter &&
+        !(
+          f.headName?.toLowerCase().includes(filter) ||
+          f.address?.toLowerCase().includes(filter)
+        )
+      ) return;
+
+      const card = document.createElement("div");
+      card.className = "family-card";
+      card.innerHTML = `
+        <strong>${f.headName}</strong><br>
+        📍 Area: ${f.address}<br>
+        👨‍👩‍👧 Members: 0
+      `;
+
+      onlineList.appendChild(card);
+    });
+  } catch (err) {
+    console.error("Mongo fetch failed", err);
+  }
+}
+
+/* --------------------------
+   OFFLINE (IndexedDB ONLY)
+--------------------------- */
+function renderOfflineFamilies() {
+  offlineList.innerHTML = "";
+
+  getAllFamilies((families) => {
+    families
+      .filter(f => !f.synced)
+      .forEach(f => {
+        const card = document.createElement("div");
+        card.className = "family-card pending";
+        card.innerHTML = `
+          <strong>${f.headName}</strong><br>
+          📍 Area: ${f.address}<br>
+          ⏳ Pending Sync
+        `;
+        offlineList.appendChild(card);
+      });
+  });
+}
+
+/* --------------------------
+   INITIAL LOAD
+--------------------------- */
+setTimeout(() => {
+  fetchMongoFamilies();
+  renderOfflineFamilies();
+}, 500);
+
+/* --------------------------
+   SEARCH
+--------------------------- */
+searchBox.addEventListener("input", (e) => {
+  fetchMongoFamilies(e.target.value.toLowerCase());
+});
+
+/* --------------------------
+   SYNC OFFLINE → MONGODB
+--------------------------- */
+syncBtn.addEventListener("click", () => {
+  getAllFamilies(async (families) => {
+    const offline = families.filter(f => !f.synced);
+
+    if (offline.length === 0) {
+      alert("✅ No pending data to sync");
+      return;
+    }
+
+    const progressContainer = document.getElementById("syncProgressContainer");
+    const progressText = document.getElementById("syncProgressText");
+    const progressPercent = document.getElementById("syncProgressPercent");
+    const progressBar = document.getElementById("syncProgressBar");
+
+    progressContainer.style.display = "block";
+    syncBtn.disabled = true;
+
+    const total = offline.length;
+    let completed = 0;
+
+    for (const fam of offline) {
+      try {
+        progressText.innerText = `Syncing: ${fam.headName}...`;
+        const res = await fetch("http://localhost:5000/api/family/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            headName: fam.headName,
+            address: fam.address,
+            contact: fam.contact,
+            notes: fam.notes,
+            members: fam.members || []
+          })
+        });
+
+        if (res.ok) {
+          markFamilySynced(fam.id);
+        } else if (res.status === 409) {
+          const conflictData = await res.json();
+          // Pause progress bar and prompt user for resolution
+          progressText.innerText = `Conflict found on: ${fam.headName}`;
+          await handleConflict(fam, conflictData.serverFamily);
+        }
+      } catch (err) {
+        console.error("Sync failed", err);
+      }
+      completed++;
+      const percent = Math.round((completed / total) * 100);
+      progressBar.style.width = `${percent}%`;
+      progressPercent.innerText = `${percent}%`;
+    }
+
+    progressText.innerText = "✅ Sync completed successfully!";
+    progressBar.style.background = "#4caf50";
+
+    setTimeout(() => {
+      progressContainer.style.display = "none";
+      syncBtn.disabled = false;
+      progressBar.style.width = "0%";
+      progressBar.style.background = "#ff2d75";
+      progressPercent.innerText = "0%";
+    }, 2500);
+
+    fetchMongoFamilies();
+    renderOfflineFamilies();
+  });
+});
+
+/* --------------------------
+   SYNC CONFLICT RESOLVER
+--------------------------- */
+function handleConflict(localFam, serverFam) {
+  return new Promise((resolve) => {
+    const modal = document.getElementById("conflictModal");
+    const localCard = document.getElementById("conflictLocalCard");
+    const serverCard = document.getElementById("conflictServerCard");
+
+    // Populate data
+    document.getElementById("localHead").innerText = localFam.headName;
+    document.getElementById("localAddress").innerText = `📍 Address: ${localFam.address}`;
+    document.getElementById("localNotes").innerText = `📝 Notes: ${localFam.notes || "None"}`;
+
+    document.getElementById("serverHead").innerText = serverFam.headName;
+    document.getElementById("serverAddress").innerText = `📍 Address: ${serverFam.address}`;
+    document.getElementById("serverNotes").innerText = `📝 Notes: ${serverFam.notes || "None"}`;
+
+    let selectedVersion = 'local'; // default choice
+
+    localCard.onclick = () => {
+      selectedVersion = 'local';
+      localCard.style.borderColor = "#ff1675";
+      localCard.style.background = "#fffcfd";
+      serverCard.style.borderColor = "#ddd";
+      serverCard.style.background = "#fafafa";
+    };
+
+    serverCard.onclick = () => {
+      selectedVersion = 'server';
+      serverCard.style.borderColor = "#ff1675";
+      serverCard.style.background = "#fffcfd";
+      localCard.style.borderColor = "#ddd";
+      localCard.style.background = "#fafafa";
+    };
+
+    // Reset layout states
+    localCard.onclick();
+
+    modal.style.display = "flex";
+
+    const resolveBtn = document.getElementById("resolveBtn");
+    const cancelResolveBtn = document.getElementById("cancelResolveBtn");
+
+    resolveBtn.onclick = async () => {
+      modal.style.display = "none";
+      if (selectedVersion === 'local') {
+        // Overwrite Server record
+        try {
+          const res = await fetch(`http://localhost:5000/api/family/update/${localFam.contact}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(localFam)
+          });
+          if (res.ok) {
+            markFamilySynced(localFam.id);
+            console.log("✅ Overwrote server version with local data");
+          }
+        } catch (e) {
+          console.error("Conflict update failed", e);
+        }
+      } else {
+        // Keep Server record: overwrite local IndexedDB record
+        const tx = db.transaction("families", "readwrite");
+        const store = tx.objectStore("families");
+        const req = store.get(localFam.id);
+        req.onsuccess = () => {
+          const data = req.result;
+          if (data) {
+            data.headName = serverFam.headName;
+            data.address = serverFam.address;
+            data.notes = serverFam.notes;
+            data.members = serverFam.members || [];
+            data.synced = true;
+            store.put(data);
+            console.log("✅ Overwrote local version with server data");
+          }
+        };
+      }
+      resolve();
+    };
+
+    cancelResolveBtn.onclick = () => {
+      modal.style.display = "none";
+      resolve(); // skip this item
+    };
+  });
+}
