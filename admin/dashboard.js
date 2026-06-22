@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
   // Fetch and update Workers count
   try {
-    const resWorkers = await fetch("http://localhost:5000/api/worker/all");
+    const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+    const resWorkers = await fetch(`${base}/api/worker/all`);
     const workers = await resWorkers.json();
     document.getElementById("totalWorkers").innerText = workers.length;
   } catch (err) {
@@ -10,7 +11,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and update Families stats
   try {
-    const res = await fetch("http://localhost:5000/api/family/all");
+    const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+    const res = await fetch(`${base}/api/family/all`);
     const families = await res.json();
 
     const totalFamilies = families.length;

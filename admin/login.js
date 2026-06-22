@@ -8,7 +8,8 @@ async function loginAdmin(e) {
   errorBox.innerText = "";
 
   try {
-    const res = await fetch("http://localhost:5000/api/admin/login", {
+    const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+    const res = await fetch(`${base}/api/admin/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

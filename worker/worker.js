@@ -1277,8 +1277,8 @@ document.addEventListener("DOMContentLoaded", () => {
       /* SAVE OFFLINE FIRST, THEN SYNC ONLINE */
       saveOfflineFamily(family)
         .then(insertedId => {
-          /* TRY ONLINE SAVE */
-          fetch("http://localhost:5000/api/family/add", {
+          const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+          fetch(`${base}/api/family/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(family)
@@ -1342,8 +1342,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
       // Online: call OTP generation endpoint
-      fetch("http://localhost:5000/api/abdm/generate-otp", {
+      fetch(`${base}/api/abdm/generate-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ method: abhaVerifyMethod.value, value: val })
@@ -1383,7 +1384,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const headName = document.getElementById("headName").value.trim();
 
-      fetch("http://localhost:5000/api/abdm/verify-otp", {
+      const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+      fetch(`${base}/api/abdm/verify-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -81,9 +81,10 @@ async function fetchAadhaarData() {
 
   console.log("Fetching Aadhaar for phone:", phone);
 
+  const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
   try {
     const response = await fetch(
-      `http://localhost:5000/api/aadhaar/fetch/${phone}`
+      `${base}/api/aadhaar/fetch/${phone}`
     );
 
     if (!response.ok) {
@@ -135,8 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
+      const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
       const response = await fetch(
-        "http://localhost:5000/api/admin/register",
+        `${base}/api/admin/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

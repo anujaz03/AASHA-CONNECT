@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const table = document.getElementById("familyTable");
 
   try {
-    const res = await fetch("http://localhost:5000/api/family/all");
+    const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+    const res = await fetch(`${base}/api/family/all`);
     const families = await res.json();
 
     table.innerHTML = "";

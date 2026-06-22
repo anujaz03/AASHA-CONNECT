@@ -45,7 +45,8 @@ if (!testOTPMap[phone] || testOTPMap[phone] !== enteredOTP) {
 
 
   try {
-    const res = await fetch(`http://localhost:5000/api/aadhaar/${phone}`);
+    const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+    const res = await fetch(`${base}/api/aadhaar/${phone}`);
     const result = await res.json();
 
     if (!res.ok || !result.success) {
@@ -104,7 +105,8 @@ document.getElementById("registerForm").addEventListener("submit", async functio
   }
 
   try {
-    const res = await fetch("http://localhost:5000/api/admin/register", {
+    const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+    const res = await fetch(`${base}/api/admin/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

@@ -8,7 +8,8 @@ const syncBtn = document.getElementById("syncBtn");
 --------------------------- */
 async function fetchMongoFamilies(filter = "") {
   try {
-    const res = await fetch("http://localhost:5000/api/family");
+    const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+    const res = await fetch(`${base}/api/family`);
     const families = await res.json();
 
     onlineList.innerHTML = "";
@@ -229,7 +230,8 @@ function handleConflict(localFam, serverFam) {
       if (selectedVersion === 'local') {
         // Overwrite Server record
         try {
-          const res = await fetch(`http://localhost:5000/api/family/${localFam.contact}`, {
+          const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+          const res = await fetch(`${base}/api/family/${localFam.contact}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(localFam)
@@ -352,7 +354,8 @@ async function updateDebugInfo() {
   const apiStatusEl = document.getElementById("debugApiStatus");
   const mongoStatusEl = document.getElementById("debugMongoStatus");
   try {
-    const res = await fetch("http://localhost:5000/api/family/health");
+    const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+    const res = await fetch(`${base}/api/family/health`);
     if (res.ok) {
       const data = await res.json();
       apiStatusEl.innerText = "🟢 Online";

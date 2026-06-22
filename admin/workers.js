@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadWorkers() {
     try {
-      const res = await fetch("http://localhost:5000/api/worker/all");
+      const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+      const res = await fetch(`${base}/api/worker/all`);
       const data = await res.json();
 
       table.innerHTML = "";
@@ -55,7 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 try {
-  const res = await fetch("http://localhost:5000/api/worker/add", {
+  const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+  const res = await fetch(`${base}/api/worker/add`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -87,7 +89,8 @@ try {
   });
 
   window.toggleStatus = async id => {
-    await fetch(`http://localhost:5000/api/worker/toggle/${id}`, {
+    const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+    await fetch(`${base}/api/worker/toggle/${id}`, {
       method: "PATCH"
     });
     loadWorkers();

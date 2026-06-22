@@ -45,7 +45,8 @@ async function sendToServer(familyData) {
     members: familyData.members || []
   };
 
-  const res = await fetch("http://localhost:5000/api/family/add", {
+  const base = window.API_BASE_URL || "https://aasha-connect.onrender.com";
+  const res = await fetch(`${base}/api/family/add`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
