@@ -78,6 +78,11 @@ async function saveFamily(req, res) {
 
     await family.save();
     console.log("Express API: MongoDB save success for contact:", req.body.contact);
+    console.log(`Database Name: ${mongoose.connection.name}`);
+    console.log(`Collection Name: ${family.collection.name}`);
+    console.log(`Document ID: ${family._id}`);
+    const docCount = await Family.countDocuments();
+    console.log(`Document Count After Save: ${docCount}`);
 
     res.json({
       success: true,

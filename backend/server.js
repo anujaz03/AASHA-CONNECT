@@ -34,10 +34,20 @@ app.use("/api/abdm", abdmRoutes);
 const mongoURI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/aasha";
 const port = process.env.PORT || 5000;
 
+function maskMongoURI(uri) {
+  if (!uri) return "None";
+  return uri.replace(/(mongodb(?:\+srv)?:\/\/[^:]+:)([^@]+)(@)/, "$1******$3");
+}
+
 mongoose
   .connect(mongoURI)
   .then(() => {
     console.log("✅ MongoDB connected");
+    console.log(`MongoDB URI: ${maskMongoURI(mongoURI)}`);
+    console.log(`Connected Database Name: ${mongoose.connection.name}`);
+    console.log(`Connected Host: ${mongoose.connection.host}`);
+    const Family = require("./models/family");
+    console.log(`Connected Collection Name: ${Family.collection.name}`);
     app.listen(port, () =>
       console.log(`🚀 Server running on port ${port}`)
     );
