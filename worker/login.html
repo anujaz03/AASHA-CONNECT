@@ -4,33 +4,31 @@
     <link rel="stylesheet" href="worker.css">
     <title>Aasha Worker Login</title>
     <link rel="icon" href="/favicon.ico" />
-
+    <script src="js/auth-guard.js"></script>
 </head>
 <body>
 
 <div class="navbar">
-    <div class="logo">AASHA Connect</div>
-
+    <div class="logo">AASHA <span>Connect</span></div>
     <nav>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="add-family.html">Add Family</a>
-        <a href="families.html">Families</a>
-        <a href="qr.html">Scan QR</a>
-        <a href="login.html" class="logout">Logout</a>
+        <a href="../index.html">Return to Home</a>
     </nav>
 </div>
 
 <div class="center-box">
     <h2>Worker Login</h2>
 
-    <input type="text" placeholder="Worker ID">
-    <input type="password" placeholder="Password">
+    <input type="text" id="workerId" placeholder="Worker ID" required>
+    <input type="password" id="password" placeholder="Password" required>
 
-    <button class="btn btn-primary" onclick="location.href='dashboard.html'">
+    <button class="btn btn-primary" id="loginBtn">
         Login
     </button>
+    <div id="msg" style="color: #ff2d75; font-size: 13px; margin-top: 15px; font-weight: bold; text-align: center;"></div>
 </div>
 
-<script src="./js/status-banner.js"></script>
+<script src="/config.js"></script>
+<script src="js/login.js"></script>
+<script src="js/status-banner.js"></script>
 </body>
 </html>

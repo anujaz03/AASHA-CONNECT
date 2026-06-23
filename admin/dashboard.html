@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Admin Dashboard | AASHA Connect</title>
   <link rel="stylesheet" href="admin.css">
+  <script src="auth-guard.js"></script>
   <!-- Leaflet Map Integration -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -15,11 +16,11 @@
 <div class="navbar">
   <div class="nav-left">AASHA Connect – Admin</div>
   <div class="nav-right">
-    <a href="../index.html" class="active">Dashboard</a>
+    <a href="dashboard.html">Dashboard</a>
     <a href="workers.html">ASHA Workers</a>
     <a href="families.html">Families</a>
     <a href="reports.html">Reports</a>
-    <a href="login.html">Logout</a>
+    <a href="#" class="logout">Logout</a>
   </div>
 </div>
 
@@ -34,25 +35,25 @@
 
     <!-- ======= STATS CARDS ======= -->
     <div class="stats-grid">
-      <div class="stat-card">
+      <div class="stat-card" onclick="location.href='workers.html'" style="cursor: pointer;">
         <h2>👩‍⚕️ ASHA Workers</h2>
         <p class="stat-number" id="totalWorkers">--</p>
         <span>Total registered</span>
       </div>
 
-      <div class="stat-card">
+      <div class="stat-card" onclick="location.href='families.html'" style="cursor: pointer;">
         <h2>👨‍👩‍👧 Families</h2>
         <p class="stat-number" id="totalFamilies">--</p>
         <span>Total surveyed</span>
       </div>
 
-      <div class="stat-card">
+      <div class="stat-card" onclick="location.href='families.html'" style="cursor: pointer;">
         <h2>📅 Today Surveyed</h2>
         <p class="stat-number" id="todayFamilies">--</p>
         <span>Added today</span>
       </div>
 
-      <div class="stat-card alert">
+      <div class="stat-card alert" onclick="location.href='reports.html'" style="cursor: pointer;">
         <h2>📊 This Month</h2>
         <p class="stat-number" id="monthFamilies">--</p>
         <span>Added this month</span>

@@ -1,5 +1,6 @@
-/* ================= LOGGED-IN WORKER (TEMP MOCK) ================= */
-const loggedInWorker = {
+/* ================= LOGGED-IN WORKER ================= */
+const workerUserStr = localStorage.getItem("workerUser");
+const loggedInWorker = workerUserStr ? JSON.parse(workerUserStr) : {
   id: "694a8f11b1f3f309ff6ce034",
   name: "Sunita Patil"
 };
@@ -1289,23 +1290,29 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .then(data => {
             console.log("Saved to MongoDB, removing from IndexedDB:", data);
-            deleteOfflineFamily(insertedId);
+            deleteOfflineFamily(insertedId).then(() => {
+              showSuccessAndRedirect("Family Synced Successfully!");
+            });
           })
           .catch(err => {
             console.warn("Offline, will sync later", err);
+            showSuccessAndRedirect("Family Saved Offline (Pending Sync)!");
           });
         })
         .catch(err => {
           console.error("IndexedDB save failed:", err);
+          alert("Error saving family locally!");
         });
 
-      const lang = getSelectedLang();
-      if (lang === "hi-IN") speakText("परिवार की जानकारी सफलतापूर्वक सहेजी गई");
-      else if (lang === "mr-IN") speakText("कुटुंबाची माहिती यशस्वीरित्या जतन झाली");
-      else speakText("Family saved successfully");
+      function showSuccessAndRedirect(msg) {
+        const lang = getSelectedLang();
+        if (lang === "hi-IN") speakText("परिवार की जानकारी सफलतापूर्वक सहेजी गई");
+        else if (lang === "mr-IN") speakText("कुटुंबाची माहिती यशस्वीरित्या जतन झाली");
+        else speakText(msg);
 
-      alert("Family saved successfully");
-      window.location.href = "families.html";
+        alert(msg);
+        window.location.href = "families.html";
+      }
     });
   }
 
